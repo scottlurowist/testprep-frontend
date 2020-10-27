@@ -1,1 +1,36 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// index.scss
+//
+// Provides application-wide styling for the test prep application.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+@import './variables';
 @import '~bootstrap/scss/bootstrap';
+
+
+
+
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  
+    // This establishes 1rem for the test prep app.
+    font-size: 16px;
+  }
+  
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }

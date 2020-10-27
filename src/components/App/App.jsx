@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// App.jsx
+//
+// This component is the test prep application. It is the SPA. It also 
+// establishes our routes.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 import React, { Component, Fragment } from 'react'
 import { Route } from 'react-router-dom'
 
@@ -8,6 +18,9 @@ import SignUp from '../SignUp/SignUp'
 import SignIn from '../SignIn/SignIn'
 import SignOut from '../SignOut/SignOut'
 import ChangePassword from '../ChangePassword/ChangePassword'
+
+
+
 
 class App extends Component {
   constructor () {
