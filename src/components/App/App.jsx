@@ -2,46 +2,50 @@
 //
 // App.jsx
 //
-// This component is the test prep application. It is the SPA. It also 
-// establishes our routes.
+// This component is the test prep application. It is the SPA. it contains our
+// navbar and it also establishes our routes.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 
-import React, { Component, Fragment } from 'react'
-import { Route } from 'react-router-dom'
+import React, { Component, Fragment } from 'react';
+import { Route } from 'react-router-dom';
 
-import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute'
-import AutoDismissAlert from '../AutoDismissAlert/AutoDismissAlert'
-import Header from '../Header/Header'
-import SignUp from '../SignUp/SignUp'
-import SignIn from '../SignIn/SignIn'
-import SignOut from '../SignOut/SignOut'
-import ChangePassword from '../ChangePassword/ChangePassword'
+import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute';
+import AutoDismissAlert from '../AutoDismissAlert/AutoDismissAlert';
+import Header from '../Header/Header';
+import SignUp from '../SignUp/SignUp';
+import SignIn from '../SignIn/SignIn';
+import SignOut from '../SignOut/SignOut';
+import ChangePassword from '../ChangePassword/ChangePassword';
+
+import HomeView from './../../views/Home/HomeView';
+import SelectTestView from './../../views/SelectTest/SelectTestView';
+import TakeTestView from './../../views/TakeTest/TakeTestView';
 
 
 
 
 class App extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props);
 
     this.state = {
       user: null,
       msgAlerts: []
-    }
-  }
+    };
+  };
 
-  setUser = user => this.setState({ user })
+  setUser = user => this.setState({ user });
 
-  clearUser = () => this.setState({ user: null })
+  clearUser = () => this.setState({ user: null });
 
   msgAlert = ({ heading, message, variant }) => {
-    this.setState({ msgAlerts: [...this.state.msgAlerts, { heading, message, variant }] })
+    this.setState({ msgAlerts: [...this.state.msgAlerts, { heading, message, variant }] });
   }
 
   render () {
-    const { msgAlerts, user } = this.state
+    const { msgAlerts, user } = this.state;
 
     return (
       <Fragment>
@@ -55,6 +59,9 @@ class App extends Component {
           />
         ))}
         <main className="container">
+          <Route exact path='/' render={() => (
+            <HomeView msgAlert={this.msgAlert} />
+          )} />
           <Route path='/sign-up' render={() => (
             <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
           )} />
@@ -67,10 +74,17 @@ class App extends Component {
           <AuthenticatedRoute user={user} path='/change-password' render={() => (
             <ChangePassword msgAlert={this.msgAlert} user={user} />
           )} />
+          <AuthenticatedRoute user={user} path='/select-test' render={() => (
+            <SelectTestView msgAlert={this.msgAlert} user={user} />
+          )} /> 
+          <AuthenticatedRoute user={user} path='/take-test/:id' render={() => (
+            <TakeTestView msgAlert={this.msgAlert} user={user} />
+          )} />                      
         </main>
       </Fragment>
     )
   }
 }
 
-export default App
+
+export default App;
