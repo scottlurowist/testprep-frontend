@@ -15,7 +15,7 @@ import axios from 'axios';
 
 // This is General Assembly code that I added to my project. This config file
 // contains the URLs for data access.
-import apiUrl from './apiConfig'
+import apiUrl from './../apiConfig';
 
 
 
@@ -40,6 +40,11 @@ class TestprepDataModel {
     };
 
 
+    // Allows the user to get a single test by it's ID.
+    //
+    // token - A JSON web token used for authorization to the web service.
+    // testId - The MongoDB ID for the test.
+    //
     getATest = (token, testId) => {
 
         // Return the promise to the caller.
