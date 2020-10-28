@@ -13,7 +13,7 @@ import { withRouter } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-import TestprepDataModel from '../../data-model';
+import TestprepDataModel from './../../api/data-model';
 
 
 

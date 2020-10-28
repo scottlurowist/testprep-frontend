@@ -11,9 +11,12 @@
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 
-import TestprepDataModel from './../../data-model';
+import Question from './../../components/Question/Question';
+
+import TestprepDataModel from './../../api/data-model';
+import questionTypeEnum from '../../lib/questionTypeEnum';
+
 
 
 
@@ -25,17 +28,23 @@ class TakeTestView extends React.Component {
         super(props);
 
         this.state = {
-            msgAlert: props.msgAlert,
-            test: {},
+            loaded: false,
+            currentQuestion: null,
+            checkAnswerButtonDisabled: false,
+            nextQuestionButtonDisabled: true,
             user: props.user
         };
 
+        this.test = null;
+        this.currentQuestionIndex = -1;
+        this.numberOfQuestions = -1; 
+        this.msgAlert =  props.msgAlert;
         this.dataModel = new TestprepDataModel();
     };
 
 
     // A React.js lifecycle method that is invoked immediately after a
-    // component is mounted (inserted into the tree). 
+    // component is mounted (inserted into the DOM). 
     //
     async componentDidMount() {
         try {
@@ -45,53 +54,104 @@ class TakeTestView extends React.Component {
             const response = await this.dataModel
                                        .getATest(this.state.user.token, testId);
 
-            this.setState({ test: response.data.test } );
+            this.test = response.data.test; 
+            this.currentQuestionIndex = 0;
+            this.numberOfQuestions = this.test.questions.length; 
+            this.answersToTheQuestion = null;
+
+            this.setState({
+                loaded: true,
+                currentQuestion: this.test.questions[this.currentQuestionIndex],
+            }); 
         }
         catch(err) {
 
-            this.state.msgAlert(
-                {heading: 'Foo', message: 'bar', variant: 'danger'});
+            this.msgAlert(
+                {heading: 'Error', message: err.message, variant: 'danger'});
         }
     };
 
 
-    buttonClickHandler = () => {
+    checkAnswerButtonClickHandler = () => {
+        let message = 'You answered correctly';
+        let variant = 'success';
+        let index = 0;
+
+        for (let choice of this.state.currentQuestion.choices) {
+            if (choice.isAnswer !== this.answersToTheQuestion[index]) {
+                message = 'You answered incorrectly';
+                variant = 'danger';
+                break;
+            }
+
+            index += 1;
+        };
+
+        this.msgAlert(
+            {
+                heading: `${this.state.currentQuestion.text}`,
+                message: `${message}`,
+                variant: `${variant}`
+            }  
+        );    
+    
+        this.currentQuestionIndex += 1;
+
+        if (this.currentQuestionIndex < this.numberOfQuestions ) {
+            this.setState({
+                checkAnswerButtonDisabled: true,
+                nextQuestionButtonDisabled: false
+            });
+        } 
+        else if (this.currentQuestionIndex === this.numberOfQuestions) {
+            this.setState({
+                checkAnswerButtonDisabled: true,
+                nextQuestionButtonDisabled: true
+            });
+        }
+    };
 
 
-        this.state.msgAlert(
-            {heading: 'Foo', message: 'click worked', variant: 'success'});        
-    }
+    nextQuestionButtonClickHandler = () => {
+        const question = this.test.questions[this.currentQuestionIndex];
+
+        this.setState({ 
+            checkAnswerButtonDisabled: false,
+            nextQuestionButtonDisabled: true,
+            currentQuestion: question
+        });
+    };
+
+
+    answerChangedCallback = answers => {
+        this.answersToTheQuestion = answers;
+    };
 
 
     // A React.js lifecyle method that is invoked whenever state changes and
     // renders the component.
     //
     render() {
-
-
         return (
             <Fragment>
-                <h3>{this.state.test.name}</h3>
-                {/* <div>
-                    {this.state.tests.map(test => {
-                        return (
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Body>
-                                    <Card.Title>
-                                        {test.name}
-                                    </Card.Title>
-                                    <Card.Text>
-                                        {test.description}
-                                    </Card.Text>
-                                    <Button variant="primary" 
-                                            onClick={this.buttonClickHandler}>
-                                                Go somewhere
-                                    </Button>
-                                </Card.Body>
-                            </Card>
-                        )
-                    })}
-                </div> */}
+                { this.state.loaded &&
+                  <div>
+                    <h2>{this.test.name}</h2>
+                    <Question question={ this.state.currentQuestion.text }
+                              questionType={ this.state.currentQuestion.type }
+                              answerChangedCallback={ answers => this.answerChangedCallback(answers) }
+                              choices={ this.state.currentQuestion.choices }
+                    />
+                    <Button disabled={this.state.checkAnswerButtonDisabled} 
+                            onClick={() => this.checkAnswerButtonClickHandler()} >
+                        Check Answer
+                    </Button>
+                    <Button disabled={this.state.nextQuestionButtonDisabled} 
+                            onClick={() => this.nextQuestionButtonClickHandler()}>
+                        Next Question
+                    </Button>
+                  </div>
+                }
             </Fragment>
         );
     };
