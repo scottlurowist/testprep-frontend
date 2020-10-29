@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// SelectTestView.jsx
+// MyTestsView.jsx
 //
-// This component is the view to which a user is directed after signin. From
-// here they may select a test to take.
+// This component is the view for which a user goes to select a personal test
+// for performing CRUD operations on it.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@ import TestprepDataModel from './../../api/data-model';
 
 // This component is the view to which a user is directed after signin.
 // From here they may select a test to take.
-class TakeTestView extends React.Component {
+class MyTestsView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -60,7 +60,7 @@ class TakeTestView extends React.Component {
 
         const { history } = this.props;
 
-        const url = `/take-test/${test._id}`;
+        const url = `/edit-test/${test._id}`;
         history.push(url);
     }
 
@@ -71,7 +71,7 @@ class TakeTestView extends React.Component {
     render() {
         return (
             <Fragment>
-                <h3>Take a Test</h3>
+                <h3>Select a Test To Edit</h3>
                 <div>
                     {this.state.tests.map(test => {
                         return (
@@ -85,7 +85,7 @@ class TakeTestView extends React.Component {
                                     </Card.Text>
                                     <Button variant="primary" 
                                             onClick={() => this.buttonClickHandler(test)}>
-                                                Take the test!
+                                                Edit the test!
                                     </Button>
                                 </Card.Body>
                             </Card>
@@ -98,4 +98,4 @@ class TakeTestView extends React.Component {
 }
 
 
-export default withRouter(TakeTestView);
+export default withRouter(MyTestsView);

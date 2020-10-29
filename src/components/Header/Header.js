@@ -4,7 +4,8 @@ import Navbar from 'react-bootstrap/Navbar'
 
 const authenticatedOptions = (
   <Fragment>
-    <Nav.Link href="#select-test">Select Test</Nav.Link>
+    <Nav.Link href="#select-test">Take A Test</Nav.Link>
+    <Nav.Link href="#my-tests">My Tests</Nav.Link>
     <Nav.Link href="#change-password">Change Password</Nav.Link>
     <Nav.Link href="#sign-out">Sign Out</Nav.Link>
   </Fragment>
