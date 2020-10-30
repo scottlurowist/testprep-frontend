@@ -56,6 +56,9 @@ class EditTestView extends React.Component {
     };
 
 
+    // React.js does not like nested state. So this sets the state for the
+    // currently loaded question into a flattened state.
+    //
     setQuestionState = currentQuestionIndex =>  {
         const choiceOneText = this.test.questions[currentQuestionIndex].choices[0].text;
         const choiceTwoText = this.test.questions[currentQuestionIndex].choices[1].text;
@@ -88,23 +91,8 @@ class EditTestView extends React.Component {
             currentThirdChoiceIsCorrectDisabled: choiceThreeText === '' ? true : false,
             currentFourthChoiceIsCorrectDisabled: choiceFourText === '' ? true : false,               
             selectedOption: this.test.questions[currentQuestionIndex].type,
-            choiceType: choiceType,
-            prevQuestionButtonDisabled:true,
-            nextQuestionButtonDisabled: this.numberOfQuestions > 1 ? false : true
+            choiceType: choiceType
         });
-
-        if (this.currentQuestionIndex === (this.numberOfQuestions - 1)) {
-            this.setState({
-                prevQuestionButtonDisabled: false,
-                nextQuestionButtonDisabled: true
-            });
-        }
-
-        if (this.currentQuestionIndex === 0) {
-            this.setState({
-                prevQuestionButtonDisabled: true
-            });
-        }
     };
 
    
@@ -123,6 +111,7 @@ class EditTestView extends React.Component {
             this.numberOfQuestions = this.test.questions.length;
             this.setQuestionState(0);
             
+            this.enableDisableNavigationButtons();
         }
         catch(err) {
             this.msgAlert(
@@ -224,16 +213,60 @@ class EditTestView extends React.Component {
     };
 
 
+    // This takes the flattened state for the current test question and
+    // persists it back to the test object.
+    // 
+    saveTheCurrentQuestionState = () => {
+        this.test.name = this.state.testName;
+        this.test.description = this.state.testDescription;
+        this.test.questions[this.currentQuestionIndex].text = this.state.currentQuestion;
+        this.test.questions[this.currentQuestionIndex].type = this.state.selectedOption
+        this.test.questions[this.currentQuestionIndex].choices[0].text = this.state.currentFirstChoice;
+        this.test.questions[this.currentQuestionIndex].choices[0].isAnswer = this.state.currentFirstChoiceIsCorrect;
+        this.test.questions[this.currentQuestionIndex].choices[1].text = this.state.currentSecondChoice;
+        this.test.questions[this.currentQuestionIndex].choices[1].isAnswer = this.state.currentSecondChoiceIsCorrect;
+        this.test.questions[this.currentQuestionIndex].choices[2].text = this.state.currentThirdChoice;
+        this.test.questions[this.currentQuestionIndex].choices[2].isAnswer = this.state.currentThirdChoiceIsCorrect;
+        this.test.questions[this.currentQuestionIndex].choices[3].text = this.state.currentFourthChoice;
+        this.test.questions[this.currentQuestionIndex].choices[3].isAnswer = this.state.currentFourthChoiceIsCorrect;                        
+    }
+
+
+
+    enableDisableNavigationButtons = () => {
+        let prevButtonDisabled = false;
+        let nextButtonDisabled = false;
+
+        if (this.currentQuestionIndex === 0) prevButtonDisabled = true;
+        if (this.currentQuestionIndex === this.numberOfQuestions - 1) 
+            nextButtonDisabled = true;
+        if (this.numberOfQuestions === 1) {
+            prevButtonDisabled = true;
+            nextButtonDisabled = true;             
+        } 
+
+        this.setState({
+            prevQuestionButtonDisabled: prevButtonDisabled,
+            nextQuestionButtonDisabled: nextButtonDisabled             
+        });
+    };
+
+
     onNavButtonClickedHandler = event => {
+
+        // We need to save the state of our current question back to the
+        // test object from our flattened state before loading the
+        // next question.
+        this.saveTheCurrentQuestionState();
+
         const buttonClickedValue = event.target.value;
 
-        if (buttonClickedValue === '<<') {
-            this.currentQuestionIndex -= 1;
-        }
-        else {
-            this.currentQuestionIndex += 1;
-        }
+        if (buttonClickedValue === '<<') this.currentQuestionIndex -= 1;
+        else this.currentQuestionIndex += 1;
 
+        this.enableDisableNavigationButtons();
+        
+        // Load the next question into state and it will update the UI.
         this.setQuestionState(this.currentQuestionIndex);
     };
  
@@ -255,8 +288,13 @@ class EditTestView extends React.Component {
 
             this.test.questions.push(question);
             this.numberOfQuestions += 1;
+
+            // Add the new question to the end of the array of questions.
+            this.currentQuestionIndex = this.test.questions.length -1;
             this.setQuestionState(this.test.questions.length -1);
         }
+
+        this.enableDisableNavigationButtons();
     };    
 
 
