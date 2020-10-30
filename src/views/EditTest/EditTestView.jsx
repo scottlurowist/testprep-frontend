@@ -45,6 +45,7 @@ class EditTestView extends React.Component {
             choiceType: 'radio',
             prevQuestionButtonDisabled:true,
             nextQuestionButtonDisabled: true,
+            deleteButtonIsDisabled: false,
             user: props.user
         };
 
@@ -91,6 +92,7 @@ class EditTestView extends React.Component {
             currentThirdChoiceIsCorrectDisabled: choiceThreeText === '' ? true : false,
             currentFourthChoiceIsCorrectDisabled: choiceFourText === '' ? true : false,               
             selectedOption: this.test.questions[currentQuestionIndex].type,
+            deleteButtonIsDisabled: (this.test.questions.length === 1) ? true : false,
             choiceType: choiceType
         });
     };
@@ -303,9 +305,36 @@ class EditTestView extends React.Component {
             this.test.questions.push(question);
             this.numberOfQuestions += 1;
 
+            // if (this.numberOfQuestions === 1) 
+            //     this.setState({ deleteButtonIsDisabled: true });
+            // else this.setState({ deleteButtonIsDisabled: false });
+
             // Add the new question to the end of the array of questions.
-            this.currentQuestionIndex = this.test.questions.length -1;
-            this.setQuestionState(this.test.questions.length -1);
+            this.currentQuestionIndex = this.test.questions.length - 1;
+            this.setQuestionState(this.test.questions.length - 1);
+        }
+        else {
+            // TODO: Do something better when we only have one question left.
+            if (this.numberOfQuestions === 1) {
+                this.setState( { deleteButtonIsDisabled: true } );
+                return;
+            }
+
+            this.test.questions.splice(this.currentQuestionIndex, 1);
+
+            if (this.currentQuestionIndex > 0) {
+                this.currentQuestionIndex = this.currentQuestionIndex - 1;
+            }
+
+            this.numberOfQuestions = this.test.questions.length;
+
+            const disable = (this.numberOfQuestions === 1) ? true : false
+
+            this.setState( { 
+                deleteButtonIsDisabled: disable
+            });
+
+            this.setQuestionState(this.currentQuestionIndex);
         }
 
         this.enableDisableNavigationButtons();
@@ -400,6 +429,7 @@ class EditTestView extends React.Component {
                         </Button> 
                         <Button variant="primary" type="button"
                                 value='delete'
+                                disabled={ this.state.deleteButtonIsDisabled }
                                 onClick={ event => this.addDeleteButtonClickHandler(event) }>                        
                             Delete Question;
                         </Button>                                                                           
