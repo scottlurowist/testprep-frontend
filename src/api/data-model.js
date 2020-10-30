@@ -56,6 +56,18 @@ class TestprepDataModel {
     };
 
 
+    patchATest = (user, testData) => {
+
+        // Return the promise to the caller.
+        return axios({
+            method: 'patch',
+            url: `${apiUrl}/tests/${testData._id}`,
+            headers: {'Authorization': `Bearer ${user.token}`},
+            data: testData
+        });
+    };  
+
+
 
     // Allows the user to delete a flashcard by invoking the
     // webservice for creating a flashcard. 

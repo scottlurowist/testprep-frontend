@@ -120,6 +120,9 @@ class EditTestView extends React.Component {
     };
 
 
+    // Handles the input field that has the name of the test when the user
+    // edits the test name.
+    //
     onTestNameChanged = event => {
         this.setState({ testName: event.target.value });
     };
@@ -137,6 +140,17 @@ class EditTestView extends React.Component {
 
     onSubmitHandler = event => {
         event.preventDefault();
+
+        this.saveTheCurrentQuestionState();
+
+        const dataModel = new TestprepDataModel();
+
+        try {
+            dataModel.patchATest(this.state.user, this.test);
+        }
+        catch(err) {
+
+        }
     };
 
 
