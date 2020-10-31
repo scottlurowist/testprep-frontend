@@ -1,6 +1,6 @@
 {
   "name": "testprep-frontend",
-  "homepage": "https://<USERNAME>.github.io/<REPO NAME>",
+  "homepage": "https://scottlurowist.github.io/testprep-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
