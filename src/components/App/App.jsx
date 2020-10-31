@@ -22,7 +22,8 @@ import ChangePassword from '../ChangePassword/ChangePassword';
 import HomeView from './../../views/Home/HomeView';
 import SelectTestView from './../../views/SelectTest/SelectTestView';
 import TakeTestView from './../../views/TakeTest/TakeTestView';
-
+import MyTestsView from '../../views/MyTests/MyTestsView';
+import EditTestView from '../../views/EditTest/EditTestView';
 
 
 
@@ -79,7 +80,13 @@ class App extends Component {
           )} /> 
           <AuthenticatedRoute user={user} path='/take-test/:id' render={() => (
             <TakeTestView msgAlert={this.msgAlert} user={user} />
-          )} />                      
+          )} />
+          <AuthenticatedRoute user={user} path='/my-tests' render={() => (
+            <MyTestsView msgAlert={this.msgAlert} user={user} />
+          )} />    
+          <AuthenticatedRoute user={user} path='/edit-test/:id' render={() => (
+            <EditTestView msgAlert={this.msgAlert} user={user} />
+          )} />                                     
         </main>
       </Fragment>
     )

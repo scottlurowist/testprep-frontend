@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// SelectTestView.jsx
+// MyTestsView.jsx
 //
-// This component is the view to which a user is directed after signin. From
-// here they may select a test to take.
+// This component is the view for which a user goes to select a personal test
+// for performing CRUD operations on it.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@ import TestprepDataModel from './../../api/data-model';
 
 // This component is the view to which a user is directed after signin.
 // From here they may select a test to take.
-class TakeTestView extends React.Component {
+class MyTestsView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -31,6 +31,7 @@ class TakeTestView extends React.Component {
             user: props.user
         };
 
+        this.tests = [];
         this.msgAlert = props.msgAlert;
         this.dataModel = new TestprepDataModel();
     };
@@ -42,26 +43,43 @@ class TakeTestView extends React.Component {
     async componentDidMount() {
         try {
             const response = await this.dataModel
-                                       .getAllTests(this.state.user.token);
+                                       .getMyTests(this.state.user);
+
+            this.tests = response.data.tests;
 
             this.setState({ tests: response.data.tests } );
         }
         catch(err) {
 
             this.msgAlert(
-                {heading: 'Foo', message: 'bar', variant: 'danger'});
+                {heading: 'Foo', message: err.message, variant: 'danger'});
         }
     };
 
 
     // Handles the click to navigate to a particular test.
     //
-    buttonClickHandler = (test) => {
+    buttonClickHandler = async (event, test) => {
+        if (event.target.value === 'delete') {
+
+            const filteredTests = this.tests.filter(currentTest => {
+                if (currentTest.name !== test.name) {
+                    return currentTest;    
+                }
+            });
+
+            // API call here...
+            await this.dataModel.deleteATest(test._id, this.state.user.token);
+
+            this.setState({ tests: filteredTests });
+
+            return;
+        }
 
         const { history } = this.props;
+        const id = test === 'new' ? 'new' : test._id;
 
-        const url = `/take-test/${test._id}`;
-        history.push(url);
+        history.push(`/edit-test/${id}`);
     }
 
 
@@ -71,8 +89,22 @@ class TakeTestView extends React.Component {
     render() {
         return (
             <Fragment>
-                <h3>Take a Test</h3>
+                <h3>Select a Test To Edit</h3>
                 <div>
+                    <Card key={12345} style={{ width: '18rem' }}>
+                        <Card.Body>
+                            <Card.Title>
+                                New Test
+                            </Card.Title>
+                            <Card.Text>
+                                Create a new test.
+                            </Card.Text>
+                            <Button variant="primary" 
+                                    onClick={() => this.buttonClickHandler('new')}>
+                                Create a new test!
+                            </Button>
+                        </Card.Body>
+                    </Card>
                     {this.state.tests.map(test => {
                         return (
                             <Card key={test._id} style={{ width: '18rem' }}>
@@ -84,9 +116,15 @@ class TakeTestView extends React.Component {
                                         {test.description}
                                     </Card.Text>
                                     <Button variant="primary" 
+                                            value='edit'
                                             onClick={() => this.buttonClickHandler(test)}>
-                                                Take the test!
+                                                Edit the test
                                     </Button>
+                                    <Button variant="primary" 
+                                            value='delete'
+                                            onClick={ event => this.buttonClickHandler(event, test)}>
+                                                Delete the test
+                                    </Button>                                    
                                 </Card.Body>
                             </Card>
                         )
@@ -98,4 +136,4 @@ class TakeTestView extends React.Component {
 }
 
 
-export default withRouter(TakeTestView);
+export default withRouter(MyTestsView);

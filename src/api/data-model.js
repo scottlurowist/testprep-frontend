@@ -24,6 +24,22 @@ import apiUrl from './../apiConfig';
 //
 class TestprepDataModel {
 
+
+    // Allows the user to add a new test by invoking the
+    // webservice for creating a test. 
+    //
+    createATest = (test, user) => {
+
+         // Return the promise to the caller.
+        return axios({
+            method: 'post',
+            url: `${apiUrl}/tests`,
+            headers: {'Authorization': `Bearer ${user.token}`},
+            data: test
+        });
+    };   
+
+
     // Allows the user to get all flashcards by invoking the
     // webservice for index. 
     //
@@ -56,31 +72,32 @@ class TestprepDataModel {
     };
 
 
-
-    // Allows the user to delete a flashcard by invoking the
-    // webservice for creating a flashcard. 
+    // Allows the user to get a single test by it's ID.
     //
-    // russianWord - The Russian word to be saved to a flashcard.
-    // newPassword - The English word to be saved to a flashcard.
     // token - A JSON web token used for authorization to the web service.
+    // testId - The MongoDB ID for the test.
     //
-    // createFlashcard = (russianWord, englishWord, token) => {
+    getMyTests = (user) => {
 
-    //     const data =  {
-    //         "flashcard": {
-    //           "englishWord": englishWord,
-    //           "russianWord": russianWord
-    //         }
-    //     }
+        // Return the promise to the caller.
+        return axios({
+            method: 'get',
+            url: `${apiUrl}/tests/mytests/${user.email}`,
+            headers: {'Authorization': `Bearer ${user.token}`}
+        });
+    };
 
-    //     // Return the promise to the caller.
-    //     return axios({
-    //         method: 'post',
-    //         url: `${apiUrl}/flashcards`,
-    //         headers: {'Authorization': `Bearer ${token}`},
-    //         data: data
-    //     });
-    // };    
+
+    patchATest = (user, testData) => {
+
+        // Return the promise to the caller.
+        return axios({
+            method: 'patch',
+            url: `${apiUrl}/tests/${testData._id}`,
+            headers: {'Authorization': `Bearer ${user.token}`},
+            data: testData
+        });
+    };  
 
 
     // Allows the user to get all flashcards by invoking the
@@ -89,63 +106,16 @@ class TestprepDataModel {
     // flashcardId - The id of the flashcard to delete.
     // token - A JSON web token used for authorization to the web service.
     //
-    // deleteFlashcard = (flashcardId, token) => {
+    deleteATest = (testId, token) => {
 
-    //     // Return the promise to the caller.
-    //     return axios({
-    //         method: 'delete',
-    //         url: `${apiUrl}/flashcards/${flashcardId}`,
-    //         headers: {'Authorization': `Bearer ${token}`}
-    //     });
-    // };
-
-
-    // Allows the user to get all flashcards by invoking the
-    // webservice for index. 
-    //
-    // token - A JSON web token used for authorization to the web service.
-    //
-    // getAllFlashcards = (token) => {
-
-    //     // Return the promise to the caller.
-    //     return axios({
-    //         method: 'get',
-    //         url: `${apiUrl}/flashcards`,
-    //         headers: {'Authorization': `Bearer ${token}`}
-    //     });
-    // };
-
-
-
-
-   
-
-
-    // Allows the user to update a flashcard by invoking the
-    // webservice for creating a flashcard. 
-    //
-    // flashcardId - The id of the flashcard to update.
-    // russianWord - The Russian word to be udated in a flashcard.
-    // englishWord - The English word to be updated in a flashcard.
-    // token - A JSON web token used for authorization to the web service.
-    //
-    // updateFlashcard = (flashcardId, russianWord, englishWord, token) => {
-
-    //     const data =  {
-    //         "flashcard": {
-    //           "englishWord": englishWord,
-    //           "russianWord": russianWord
-    //         }
-    //     }
-
-    //     // Return the promise to the caller.
-    //     return axios({
-    //         method: 'patch',
-    //         url: `${apiUrl}/flashcards/${flashcardId}`,
-    //         headers: {'Authorization': `Bearer ${token}`},
-    //         data: data
-    //     });
-    // };   
+        // Return the promise to the caller.
+        return axios({
+            method: 'delete',
+            url: `${apiUrl}/tests/${testId}`,
+            headers: {'Authorization': `Bearer ${token}`}
+        });
+    };
+  
 }
 
 
