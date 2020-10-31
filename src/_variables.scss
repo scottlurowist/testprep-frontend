@@ -1,0 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// _variables.scss
+//
+// This partial defines application-wide variables for the test prep app.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+// Sets the background, font, and navbar colors.
+$colors: (bground: #8C8C8C, 
+          font: whitesmoke,
+          navbar: black);
+
+$theme-colors: (
+    primary: black,
+    secondary: #3b3c3e,
+);
+
+// This is the max-width breakpoint for mobile-first.
+$non-mobile-min-width: 750px;          
