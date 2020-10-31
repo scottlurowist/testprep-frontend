@@ -42,7 +42,7 @@ class MyTestsView extends React.Component {
     async componentDidMount() {
         try {
             const response = await this.dataModel
-                                       .getAllTests(this.state.user.token);
+                                       .getMyTests(this.state.user);
 
             this.setState({ tests: response.data.tests } );
         }
