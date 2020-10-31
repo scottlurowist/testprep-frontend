@@ -45,13 +45,13 @@ class TestprepDataModel {
     // token - A JSON web token used for authorization to the web service.
     // testId - The MongoDB ID for the test.
     //
-    getATest = (token, testId) => {
+    getMyTests = (user) => {
 
         // Return the promise to the caller.
         return axios({
             method: 'get',
-            url: `${apiUrl}/tests/${testId}`,
-            headers: {'Authorization': `Bearer ${token}`}
+            url: `${apiUrl}/tests/${user.email}`,
+            headers: {'Authorization': `Bearer ${user.token}`}
         });
     };
 
