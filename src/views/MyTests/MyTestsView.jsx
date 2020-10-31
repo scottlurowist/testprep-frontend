@@ -31,6 +31,7 @@ class MyTestsView extends React.Component {
             user: props.user
         };
 
+        this.tests = [];
         this.msgAlert = props.msgAlert;
         this.dataModel = new TestprepDataModel();
     };
@@ -44,6 +45,8 @@ class MyTestsView extends React.Component {
             const response = await this.dataModel
                                        .getMyTests(this.state.user);
 
+            this.tests = response.data.tests;
+
             this.setState({ tests: response.data.tests } );
         }
         catch(err) {
@@ -56,10 +59,24 @@ class MyTestsView extends React.Component {
 
     // Handles the click to navigate to a particular test.
     //
-    buttonClickHandler = (test) => {
+    buttonClickHandler = async (event, test) => {
+        if (event.target.value === 'delete') {
+
+            const filteredTests = this.tests.filter(currentTest => {
+                if (currentTest.name !== test.name) {
+                    return currentTest;    
+                }
+            });
+
+            // API call here...
+            await this.dataModel.deleteATest(test._id, this.state.user.token);
+
+            this.setState({ tests: filteredTests });
+
+            return;
+        }
 
         const { history } = this.props;
-
         const id = test === 'new' ? 'new' : test._id;
 
         history.push(`/edit-test/${id}`);
@@ -99,9 +116,15 @@ class MyTestsView extends React.Component {
                                         {test.description}
                                     </Card.Text>
                                     <Button variant="primary" 
+                                            value='edit'
                                             onClick={() => this.buttonClickHandler(test)}>
-                                                Edit the test!
+                                                Edit the test
                                     </Button>
+                                    <Button variant="primary" 
+                                            value='delete'
+                                            onClick={ event => this.buttonClickHandler(event, test)}>
+                                                Delete the test
+                                    </Button>                                    
                                 </Card.Body>
                             </Card>
                         )

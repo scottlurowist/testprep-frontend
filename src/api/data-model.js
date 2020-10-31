@@ -39,7 +39,7 @@ class TestprepDataModel {
         });
     };   
 
-    
+
     // Allows the user to get all flashcards by invoking the
     // webservice for index. 
     //
@@ -100,25 +100,21 @@ class TestprepDataModel {
     };  
 
 
-
- 
-
-
     // Allows the user to get all flashcards by invoking the
     // webservice for index. 
     //
     // flashcardId - The id of the flashcard to delete.
     // token - A JSON web token used for authorization to the web service.
     //
-    // deleteFlashcard = (flashcardId, token) => {
+    deleteATest = (testId, token) => {
 
-    //     // Return the promise to the caller.
-    //     return axios({
-    //         method: 'delete',
-    //         url: `${apiUrl}/flashcards/${flashcardId}`,
-    //         headers: {'Authorization': `Bearer ${token}`}
-    //     });
-    // };
+        // Return the promise to the caller.
+        return axios({
+            method: 'delete',
+            url: `${apiUrl}/tests/${testId}`,
+            headers: {'Authorization': `Bearer ${token}`}
+        });
+    };
   
 }
 
