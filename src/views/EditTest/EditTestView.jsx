@@ -107,7 +107,7 @@ class EditTestView extends React.Component {
             const testId = match.params.id;
 
             const response = await this.dataModel
-                                       .getATest(this.state.user.token, testId);
+                                       .getMyTests(this.state.user.token);
 
             this.test = response.data.test;
             this.numberOfQuestions = this.test.questions.length;
