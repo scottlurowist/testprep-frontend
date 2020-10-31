@@ -14,6 +14,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import TestprepDataModel from './../../api/data-model';
+import { data } from 'autoprefixer';
 
 
 
@@ -106,10 +107,45 @@ class EditTestView extends React.Component {
             const { match } = this.props;
             const testId = match.params.id;
 
-            const response = await this.dataModel
-                                       .getATest(this.state.user.token, testId);
+            let response;
 
-            this.test = response.data.test;
+            if (testId === 'new') {
+                response = {
+                    "name": "New test",
+                    "description": "New test description",
+                    "questions": [
+                        {
+                            "text": "",
+                            "type": "",
+                            "choices": [
+                                {
+                                    "text": "",
+                                    "isAnswer": false
+                                },
+                                {
+                                    "text": "",
+                                    "isAnswer": false
+                                },
+                                                    {
+                                    "text": "",
+                                    "isAnswer": false
+                                },
+                                {
+                                    "text": "",
+                                    "isAnswer": false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+            else {
+                response = await this.dataModel
+                                     .getATest(this.state.user.token, testId);
+                response = response.data.test;                     
+            }
+
+            this.test = response;
             this.numberOfQuestions = this.test.questions.length;
             this.setQuestionState(0);
             
@@ -140,7 +176,7 @@ class EditTestView extends React.Component {
     }
 
 
-    onSubmitHandler = event => {
+    onSubmitHandler = async event => {
         event.preventDefault();
 
         this.saveTheCurrentQuestionState();
@@ -148,10 +184,24 @@ class EditTestView extends React.Component {
         const dataModel = new TestprepDataModel();
 
         try {
-            dataModel.patchATest(this.state.user, this.test);
+            if (this.test._id) {
+                await dataModel.patchATest(this.state.user, this.test);            
+            }
+            else {
+                // This is the first time a test is being persisted, so we
+                // must use a POST route.
+                let response = await dataModel.createATest(this.test,
+                    this.state.user);
+
+                // Now let us reload the test so that it has an ID and we can use patchATest.
+                // response = await dataModel.getATest(this.user.token,
+                //     response.data.test._id);
+                    
+                this.test = response.data.test;
+            }
         }
         catch(err) {
-
+            let x = 4;
         }
     };
 

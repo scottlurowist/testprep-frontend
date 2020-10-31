@@ -49,7 +49,7 @@ class MyTestsView extends React.Component {
         catch(err) {
 
             this.msgAlert(
-                {heading: 'Foo', message: 'bar', variant: 'danger'});
+                {heading: 'Foo', message: err.message, variant: 'danger'});
         }
     };
 
@@ -60,8 +60,9 @@ class MyTestsView extends React.Component {
 
         const { history } = this.props;
 
-        const url = `/edit-test/${test._id}`;
-        history.push(url);
+        const id = test === 'new' ? 'new' : test._id;
+
+        history.push(`/edit-test/${id}`);
     }
 
 
@@ -73,6 +74,20 @@ class MyTestsView extends React.Component {
             <Fragment>
                 <h3>Select a Test To Edit</h3>
                 <div>
+                    <Card key={12345} style={{ width: '18rem' }}>
+                        <Card.Body>
+                            <Card.Title>
+                                New Test
+                            </Card.Title>
+                            <Card.Text>
+                                Create a new test.
+                            </Card.Text>
+                            <Button variant="primary" 
+                                    onClick={() => this.buttonClickHandler('new')}>
+                                Create a new test!
+                            </Button>
+                        </Card.Body>
+                    </Card>
                     {this.state.tests.map(test => {
                         return (
                             <Card key={test._id} style={{ width: '18rem' }}>
