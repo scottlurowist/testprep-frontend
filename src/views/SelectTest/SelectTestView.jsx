@@ -75,7 +75,9 @@ class TakeTestView extends React.Component {
                 <div>
                     {this.state.tests.map(test => {
                         return (
-                            <Card key={test._id} style={{ width: '18rem' }}>
+                            <Card key={test._id}
+                                  className='mb-4'
+                                  style={{width: '18rem'}}>
                                 <Card.Body>
                                     <Card.Title>
                                         {test.name}
