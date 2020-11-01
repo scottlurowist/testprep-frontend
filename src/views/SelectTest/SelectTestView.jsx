@@ -85,6 +85,9 @@ class TakeTestView extends React.Component {
                                     <Card.Text>
                                         {test.description}
                                     </Card.Text>
+                                    <Card.Text>
+                                        {test.questions.length} question(s)
+                                    </Card.Text>
                                     <Button variant="primary" 
                                             onClick={() => this.buttonClickHandler(test)}>
                                                 Take the test!
