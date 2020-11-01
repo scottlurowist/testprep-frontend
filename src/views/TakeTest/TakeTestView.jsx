@@ -15,7 +15,6 @@ import Button from 'react-bootstrap/Button';
 import Question from './../../components/Question/Question';
 
 import TestprepDataModel from './../../api/data-model';
-import questionTypeEnum from '../../lib/questionTypeEnum';
 
 
 
@@ -32,12 +31,16 @@ class TakeTestView extends React.Component {
             currentQuestion: null,
             checkAnswerButtonDisabled: false,
             nextQuestionButtonDisabled: true,
+            questionsAnswered: 0,
+            questionsAnsweredCorrectly: 0,
             user: props.user
         };
 
         this.test = null;
         this.currentQuestionIndex = -1;
         this.numberOfQuestions = -1; 
+        this.questionsAnswered = 0;
+        this.questionsAnsweredCorrectly = 0;
         this.msgAlert =  props.msgAlert;
         this.dataModel = new TestprepDataModel();
     };
@@ -77,7 +80,6 @@ class TakeTestView extends React.Component {
         let variant = 'success';
         let index = 0;
 
-
         if (this.answersToTheQuestion === null) {
             this.msgAlert(
                 {
@@ -90,20 +92,29 @@ class TakeTestView extends React.Component {
             return;
         }
 
+        // The question was answered.
+        this.questionsAnswered += 1;
+
         // Check for choices that are not empty and any that have been
         // answered incorrectly. Any single incorrect answer fails
         // the repsonse.
+        let incorrectAnswer;
+
         for (let choice of this.state.currentQuestion.choices) {
             if (choice.text !== '') {
                 if (choice.isAnswer !== this.answersToTheQuestion[index]) {
                     message = 'You answered incorrectly';
                     variant = 'danger';
+                    incorrectAnswer = true;
                     break;
                 }
             }
 
             index += 1;
         };
+
+        // At this point the question was answered correctly.
+        if (!incorrectAnswer) this.questionsAnsweredCorrectly += 1;
 
         this.msgAlert(
             {
@@ -112,8 +123,23 @@ class TakeTestView extends React.Component {
                 variant: `${variant}`
             }  
         );    
-    
+  
         this.currentQuestionIndex += 1;
+
+        if (this.currentQuestionIndex === this.numberOfQuestions) {
+            this.msgAlert(
+                {
+                    heading: `${this.test.name} is complete`,
+                    message: `You have scored ${this.questionsAnsweredCorrectly} out of ${this.numberOfQuestions}`,
+                    variant: `${variant}`
+                }  
+            );               
+        }
+
+        this.setState({
+            questionsAnswered: this.questionsAnswered,
+            questionsAnsweredCorrectly: this.questionsAnsweredCorrectly 
+        });
 
         if (this.currentQuestionIndex < this.numberOfQuestions ) {
             this.setState({
@@ -155,6 +181,9 @@ class TakeTestView extends React.Component {
                 { this.state.loaded &&
                   <div>
                     <h2>{this.test.name}</h2>
+                    <span>
+                        {`${this.questionsAnsweredCorrectly}/${this.questionsAnswered}`}
+                    </span>
                     <Question question={ this.state.currentQuestion.text }
                               questionType={ this.state.currentQuestion.type }
                               answerChangedCallback={ answers => this.answerChangedCallback(answers) }
