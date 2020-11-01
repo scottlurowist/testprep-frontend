@@ -73,10 +73,27 @@ class MyTestsView extends React.Component {
                 }
             });
 
-            // API call here...
-            await this.dataModel.deleteATest(this.selectedTest._id, this.state.user.token);
+            try {
+                await this.dataModel.deleteATest(this.selectedTest._id, this.state.user.token);
 
-            this.setState({ tests: filteredTests });
+                this.setState({ tests: filteredTests });
+
+                this.msgAlert({
+                    heading: 'Delete a Test',
+                    message: 'Your delete was successful',
+                    variant: 'success'
+                });            
+            }
+            catch(err) {
+                this.msgAlert({
+                    heading: 'Delete a Test',
+                    message: 'Your delete failed',
+                    variant: 'danger'
+                });                  
+            }
+
+
+
 
             return;
         }
