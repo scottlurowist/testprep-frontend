@@ -77,11 +77,29 @@ class TakeTestView extends React.Component {
         let variant = 'success';
         let index = 0;
 
+
+        if (this.answersToTheQuestion === null) {
+            this.msgAlert(
+                {
+                    heading: `${this.state.currentQuestion.text}`,
+                    message: `Please select an answer`,
+                    variant: 'info'
+                }  
+            );
+
+            return;
+        }
+
+        // Check for choices that are not empty and any that have been
+        // answered incorrectly. Any single incorrect answer fails
+        // the repsonse.
         for (let choice of this.state.currentQuestion.choices) {
-            if (choice.isAnswer !== this.answersToTheQuestion[index]) {
-                message = 'You answered incorrectly';
-                variant = 'danger';
-                break;
+            if (choice.text !== '') {
+                if (choice.isAnswer !== this.answersToTheQuestion[index]) {
+                    message = 'You answered incorrectly';
+                    variant = 'danger';
+                    break;
+                }
             }
 
             index += 1;
