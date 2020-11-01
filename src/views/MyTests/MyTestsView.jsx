@@ -32,6 +32,7 @@ class MyTestsView extends React.Component {
         };
 
         this.tests = [];
+        this.selectedTest = null;
         this.msgAlert = props.msgAlert;
         this.dataModel = new TestprepDataModel();
     };
@@ -59,17 +60,21 @@ class MyTestsView extends React.Component {
 
     // Handles the click to navigate to a particular test.
     //
-    buttonClickHandler = async (event, test) => {
+    buttonClickHandler = async (event) => {
+        const foo = 100;
+
         if (event.target.value === 'delete') {
 
+            const selectedTest = this.selectedTest;
+
             const filteredTests = this.tests.filter(currentTest => {
-                if (currentTest.name !== test.name) {
+                if (currentTest.name !== selectedTest.name) {
                     return currentTest;    
                 }
             });
 
             // API call here...
-            await this.dataModel.deleteATest(test._id, this.state.user.token);
+            await this.dataModel.deleteATest(this.selectedTest._id, this.state.user.token);
 
             this.setState({ tests: filteredTests });
 
@@ -77,7 +82,7 @@ class MyTestsView extends React.Component {
         }
 
         const { history } = this.props;
-        const id = test === 'new' ? 'new' : test._id;
+        const id = this.selectedTest === 'new' ? 'new' : this.selectedTest._id;
 
         history.push(`/edit-test/${id}`);
     }
@@ -99,15 +104,21 @@ class MyTestsView extends React.Component {
                             <Card.Text>
                                 Create a new test.
                             </Card.Text>
-                            <Button variant="primary" 
-                                    onClick={() => this.buttonClickHandler('new')}>
+                            <Button variant="primary"
+                                    onClick={ event => {
+                                        this.selectedTest = 'new';
+                                        this.buttonClickHandler(event);
+                                    }}>
                                 Create a new test!
                             </Button>
                         </Card.Body>
                     </Card>
                     {this.state.tests.map(test => {
                         return (
-                            <Card key={test._id} style={{ width: '18rem' }}>
+                            <Card key={test._id} style={{ 
+                                marginBottom: '1rem',
+                                width: '18rem' 
+                            }}>
                                 <Card.Body>
                                     <Card.Title>
                                         {test.name}
@@ -117,13 +128,19 @@ class MyTestsView extends React.Component {
                                     </Card.Text>
                                     <Button variant="primary" 
                                             value='edit'
-                                            onClick={() => this.buttonClickHandler(test)}>
-                                                Edit the test
+                                            onClick={ event =>  {
+                                                this.selectedTest = test;
+                                                this.buttonClickHandler(event)
+                                            }}>
+                                        Edit the test
                                     </Button>
                                     <Button variant="primary" 
                                             value='delete'
-                                            onClick={ event => this.buttonClickHandler(event, test)}>
-                                                Delete the test
+                                            onClick={ event => {
+                                                this.selectedTest = test;
+                                                this.buttonClickHandler(event);
+                                            }}>
+                                        Delete the test
                                     </Button>                                    
                                 </Card.Body>
                             </Card>
