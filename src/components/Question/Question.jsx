@@ -7,8 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-import React from 'react';
-//import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 
 import questionTypeEnum from './../../lib/questionTypeEnum';
 
@@ -56,17 +55,25 @@ class Question extends React.Component {
         this.selectedAnswers = {};
 
         const choices = this.props.choices.map((choice, index) => {
+
             // When we load a new question, make sure that we set
             // all answers to false since a user must opt-in.
             this.selectedAnswers[index] = false;
 
-            return (
-                <p key={index}>
-                    <input id={index} type={controlType} name='question'
-                           onChange={event => this.onControlChanged(event)} />
-                    <label for={index}>{choice.text}</label>
-                </p>
-            );
+            // Filter causes a bizarre exception to be thrown. So if the
+            // choice does not have text, don't render it. Otherwise render it.
+            if (choice.text === '') {
+                return <Fragment></Fragment>
+            }
+            else {
+                return (
+                    <p key={index}>
+                        <input id={index} type={controlType} name='question'
+                            onChange={event => this.onControlChanged(event)} />
+                        <label for={index}>{choice.text}</label>
+                    </p>
+                );
+            }
         });
 
         return <div>{choices}</div>;
@@ -83,13 +90,6 @@ class Question extends React.Component {
         );
     }
 }
-
-// Question.propTypes = {
-//     question: PropTypes.string.isRequired,
-//     questionType: PropTypes.string.isRequired,
-//     choices: PropTypes.arrayOf(PropTypes.string).isRequired,
-//     correctAnswers: PropTypes.arrayOf(PropTypes.number).isRequired,
-// };
 
 
 export default Question;
