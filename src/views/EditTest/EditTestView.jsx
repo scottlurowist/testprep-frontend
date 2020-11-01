@@ -185,23 +185,35 @@ class EditTestView extends React.Component {
 
         try {
             if (this.test._id) {
-                await dataModel.patchATest(this.state.user, this.test);            
+                await dataModel.patchATest(this.state.user, this.test);  
+                
+                this.msgAlert({
+                    heading: 'Save a Test',
+                    message: 'Your save was successful',
+                    variant: 'success'
+                });
             }
             else {
                 // This is the first time a test is being persisted, so we
                 // must use a POST route.
                 let response = await dataModel.createATest(this.test,
                     this.state.user);
-
-                // Now let us reload the test so that it has an ID and we can use patchATest.
-                // response = await dataModel.getATest(this.user.token,
-                //     response.data.test._id);
                     
                 this.test = response.data.test;
+
+                this.msgAlert({
+                    heading: 'Save a Test',
+                    message: 'Your save was successful',
+                    variant: 'success'
+                });
             }
         }
         catch(err) {
-            let x = 4;
+            this.msgAlert({
+                heading: 'Save a Test',
+                message: 'Your save failed',
+                variant: 'danger'
+            });
         }
     };
 
