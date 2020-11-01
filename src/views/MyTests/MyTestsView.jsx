@@ -92,9 +92,6 @@ class MyTestsView extends React.Component {
                 });                  
             }
 
-
-
-
             return;
         }
 
@@ -113,7 +110,9 @@ class MyTestsView extends React.Component {
             <Fragment>
                 <h3>Select a Test To Edit</h3>
                 <div>
-                    <Card key={12345} style={{ width: '18rem' }}>
+                    <Card key={12345} 
+                          className='mb-4'
+                          style={{width: '18rem'}}>
                         <Card.Body>
                             <Card.Title>
                                 New Test
@@ -132,10 +131,9 @@ class MyTestsView extends React.Component {
                     </Card>
                     {this.state.tests.map(test => {
                         return (
-                            <Card key={test._id} style={{ 
-                                marginBottom: '1rem',
-                                width: '18rem' 
-                            }}>
+                            <Card key={test._id}  
+                                  className='mb-4'
+                                  style={{width: '18rem'}}>
                                 <Card.Body>
                                     <Card.Title>
                                         {test.name}
@@ -143,21 +141,24 @@ class MyTestsView extends React.Component {
                                     <Card.Text>
                                         {test.description}
                                     </Card.Text>
-                                    <Button variant="primary" 
+                                    <Button variant="primary"
+                                            block={false}
+                                            className='mr-3'
                                             value='edit'
                                             onClick={ event =>  {
                                                 this.selectedTest = test;
                                                 this.buttonClickHandler(event)
                                             }}>
-                                        Edit the test
+                                        Edit
                                     </Button>
                                     <Button variant="primary" 
+                                            block={false}
                                             value='delete'
                                             onClick={ event => {
                                                 this.selectedTest = test;
                                                 this.buttonClickHandler(event);
                                             }}>
-                                        Delete the test
+                                        Delete
                                     </Button>                                    
                                 </Card.Body>
                             </Card>
