@@ -14,7 +14,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import TestprepDataModel from './../../api/data-model';
-import { data } from 'autoprefixer';
 
 
 
@@ -111,12 +110,12 @@ class EditTestView extends React.Component {
 
             if (testId === 'new') {
                 response = {
-                    "name": "New test",
-                    "description": "New test description",
+                    "name": "",
+                    "description": "",
                     "questions": [
                         {
                             "text": "",
-                            "type": "",
+                            "type": "selectBest",
                             "choices": [
                                 {
                                     "text": "",
@@ -176,8 +175,43 @@ class EditTestView extends React.Component {
     }
 
 
+    validateTheTest = () => {
+        if (this.state.testName === '' ||
+            this.state.testDescription === '' ||
+            this.state.currentQuestion === '' ||
+            this.state.currentFirstChoice === '' ||
+            this.state.currentSecondChoice === '' ||
+            this.state.currentThirdChoice === '' ||
+            this.state.currentFourthChoice === '') {
+                 return false;
+        }
+
+        // Did the user select at least one choice as the correct choice?
+        // Both question types require at least one correct answer.
+        if (this.state.currentFirstChoiceIsCorrect === false &&
+            this.state.currentSecondChoiceIsCorrect === false &&
+            this.state.currentThirdChoiceIsCorrect === false &&
+            this.state.currentFourthChoiceIsCorrect === false) {
+                return false;
+        }
+        
+        return true;
+    };
+
+
     onSubmitHandler = async event => {
         event.preventDefault();
+
+        if (!this.validateTheTest()) {
+
+            this.msgAlert({
+                heading: 'Save a Test',
+                message: 'Your save was unsuccessful. All fields are required',
+                variant: 'danger'
+            });
+            
+            return;
+        }
 
         this.saveTheCurrentQuestionState();
 
