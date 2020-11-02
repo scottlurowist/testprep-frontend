@@ -75,13 +75,18 @@ class TakeTestView extends React.Component {
                 <div>
                     {this.state.tests.map(test => {
                         return (
-                            <Card key={test._id} style={{ width: '18rem' }}>
+                            <Card key={test._id}
+                                  className='mb-4'
+                                  style={{width: '18rem'}}>
                                 <Card.Body>
                                     <Card.Title>
                                         {test.name}
                                     </Card.Title>
                                     <Card.Text>
                                         {test.description}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        {test.questions.length} question(s)
                                     </Card.Text>
                                     <Button variant="primary" 
                                             onClick={() => this.buttonClickHandler(test)}>

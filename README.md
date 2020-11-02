@@ -144,12 +144,16 @@ All data returned from API actions is formatted as JSON.
 ***
 
 ## Nice-to-haves / Technical Debt
-    - Eliminate magic numbers and strings.
-    - Massive refactoring. I lost a lot of time due to my illness, and there is a lot of
-      code bloat that should not be.
-    - Create more components. This is also an artifact of my illness.  
-    - Add the ability for user's to contact the user if they disagree with a question
+    * Eliminate magic numbers and strings.
+    * Massive refactoring. I lost a lot of time due to my illness, and there is a lot of
+      code bloat that should not be. This is particularly true in EditTestView.jsx.
+      It is too big.
+    * Create more components. This is also an artifact of my illness.  
+    * Add the ability for user's to contact the user if they disagree with a question
       and its choices.
+    * Improve the styling
+    * Be able to rearrange test question order.
+    * My list is long...  
       
 ***
 
