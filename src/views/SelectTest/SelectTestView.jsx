@@ -86,6 +86,9 @@ class TakeTestView extends React.Component {
                                         {test.description}
                                     </Card.Text>
                                     <Card.Text>
+                                        author: {test.owner.email}
+                                    </Card.Text>
+                                    <Card.Text>
                                         {test.questions.length} question(s)
                                     </Card.Text>
                                     <Button variant="primary" 
