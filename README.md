@@ -61,11 +61,11 @@ I first created the basic "views" which I consider to be "pages" in an SPA. I co
 I worked on the TakeTest view first and had that working. The bulk of the work was in the edit test view.
 There is very complicated state management, in particular because React.js does not like nested state.
 So I had to take nested MongoDB data and "flatten it" to state suitable for React.js. I had to do the 
-reverse on persisting tests back to MongoDB. The navigation buttons, and the delete button enable and
+reverse on persisting tests back to MongoDB. The navigation buttons, and add and delete button enable and
 disable for the appropriate situations. 
 
 I finally did an inital deployment to make sure that works and it was flawless. Afterwords, I tried
-to implement as much as I could to make the final due data. Styling was my lowest priority due to
+to implement as much as I could to make the final due date. Styling was my lowest priority due to
 the time I lost due to illness.
 
 ***
@@ -97,7 +97,7 @@ the time I lost due to illness.
 
   * GET*   - Retrieves all tests by all authors.
   * GET**  - Retrieves only tests authored by the authenticated user. 
-  * GET*** - Get all tests by author email.
+  * GET*** - Get all tests by author email. 
 
 All data returned from API actions is formatted as JSON.
 
@@ -119,14 +119,15 @@ All data returned from API actions is formatted as JSON.
 
 ## Technologies Used
     1. HTML / CSS / SCSS
-    2. JavaScript
-    3. React.js / React DOM Router / React Boostrap
-    4. Node.js
-    5. Express.js
-    6. Mongoose.js
-    7. MongoDB
-    8. Passport JS
-    9. Bcrypt
+    2. Bootstrap
+    3. JavaScript
+    4. React.js / React DOM Router / React Boostrap
+    5. Node.js
+    6. Express.js
+    7. Mongoose.js
+    8. MongoDB
+    9. Passport JS
+    10. Bcrypt
 
 ***
 
@@ -151,8 +152,10 @@ All data returned from API actions is formatted as JSON.
     * Create more components. This is also an artifact of my illness.  
     * Add the ability for user's to contact the user if they disagree with a question
       and its choices.
-    * Improve the styling
+    * Improve the styling dramatically. I am never satisfied with styling.
+    * Group tests by topic.
     * Be able to rearrange test question order.
+    * Create a more dramatic end to a test.
     * My list is long...  
       
 ***

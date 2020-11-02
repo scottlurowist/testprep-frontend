@@ -181,15 +181,16 @@ class TakeTestView extends React.Component {
                 { this.state.loaded &&
                   <div>
                     <h2>{this.test.name}</h2>
-                    <span>
-                        {`${this.questionsAnsweredCorrectly}/${this.questionsAnswered}`}
-                    </span>
+                    <p className='bg-dark p-3 w-50 rounded-pill' style={{ color: '#F15528'}}>
+                        {`${this.questionsAnsweredCorrectly} / ${this.questionsAnswered} answered correctly`}
+                    </p>
                     <Question question={ this.state.currentQuestion.text }
                               questionType={ this.state.currentQuestion.type }
                               answerChangedCallback={ answers => this.answerChangedCallback(answers) }
                               choices={ this.state.currentQuestion.choices }
                     />
                     <Button disabled={this.state.checkAnswerButtonDisabled} 
+                            className={'mr-4'}
                             onClick={() => this.checkAnswerButtonClickHandler()} >
                         Check Answer
                     </Button>

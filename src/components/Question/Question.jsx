@@ -67,10 +67,12 @@ class Question extends React.Component {
             }
             else {
                 return (
-                    <p key={index}>
+                    <p key={index} className='bg-dark p-3 w-50 rounded-pill'>
                         <input id={index} type={controlType} name='question'
-                            onChange={event => this.onControlChanged(event)} />
-                        <label for={index}>{choice.text}</label>
+                               className='mr-3'
+                               onChange={event => this.onControlChanged(event)} />
+                        <label style={{ color: '#F15528'}} 
+                              for={index}>{choice.text}</label>
                     </p>
                 );
             }
@@ -82,7 +84,7 @@ class Question extends React.Component {
     render() {
         return (
             <section>
-                <h2>{this.props.question}</h2>
+                <h4>{this.props.question}</h4>
                 {/* Whenever this.props.question changes, render will be invoked
                     and this.renderQuestion will also be invoked.  */}
                 <div>{this.renderQuestion()}</div>

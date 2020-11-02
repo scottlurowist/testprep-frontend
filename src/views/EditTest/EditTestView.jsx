@@ -497,33 +497,39 @@ class EditTestView extends React.Component {
                 <Form onSubmit={event => this.onSubmitHandler(event)}>
                     <Form.Group controlId="formTestName">
                         <Form.Label>Test Name</Form.Label>
-                        <Form.Control type="text" placeholder="test name" 
+                        <Form.Control type="text" placeholder="test name"
+                                      className='w-50' 
                                       value={ this.state.testName }
                                       onChange={event => this.onTestNameChanged(event) } />
                     </Form.Group>
                     <Form.Group controlId="formCurrentQuestion">
                         <Form.Label>Description</Form.Label>
                         <Form.Control type="text" placeholder="description"
+                                      className='w-50'
                                       value={this.state.testDescription}
                                       onChange={event => this.onTestDescriptionChanged(event) }  />
                     </Form.Group>
                     <Form.Group controlId="formCurrentQuestion">
                         <Button disabled={ this.state.prevQuestionButtonDisabled }
+                                className='mr-3'
                                 onClick={event => this.onNavButtonClickedHandler(event)}
                                 variant="primary" value='<<' type="button">
                             &lt;&lt;
                         </Button>
                         <Button disabled={ this.state.nextQuestionButtonDisabled }
+                                className='mr-3'
                                 onClick={event => this.onNavButtonClickedHandler(event)}
                                 variant="primary" value='>>' type="button">
                             &gt;&gt;
                         </Button>
                         <Button variant="primary" type="button"
+                                className='mr-3'
                                 value='add'
                                 onClick={ event => this.addDeleteButtonClickHandler(event) }>
                             Add Question;
                         </Button> 
                         <Button variant="primary" type="button"
+                                className='mr-3'
                                 value='delete'
                                 disabled={ this.state.deleteButtonIsDisabled }
                                 onClick={ event => this.addDeleteButtonClickHandler(event) }>                        
@@ -533,6 +539,7 @@ class EditTestView extends React.Component {
                     <Form.Group controlId="formCurrentQuestion">
                         <Form.Label>Current Question</Form.Label>
                         <Form.Control type="text" placeholder="current question"
+                                      className='w-50'
                                       value={this.state.currentQuestion}
                                       onChange={event => this.onCurrentQuestionChanged(event) }  />
                     </Form.Group>
@@ -554,7 +561,7 @@ class EditTestView extends React.Component {
                     <Form.Label>Choices</Form.Label>
                     <Form.Group controlId="formBasicCheckbox">
                         <Form.Control type="text" placeholder="first choice"
-                                      className='w-50'
+                                      className='w-50 d-inline-block mr-3'
                                       value={this.state.currentFirstChoice}
                                       onChange={event => this.onCurrentFirstChoiceChanged(event) } />
                         <Form.Check id='1-isCorrect' inline type={this.state.choiceType}
@@ -566,7 +573,7 @@ class EditTestView extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formBasicCheckbox">
                         <Form.Control type="text" placeholder="second choice"
-                                      className='w-50'
+                                      className='w-50 d-inline-block mr-3'
                                       value={this.state.currentSecondChoice}
                                       onChange={event => this.onCurrentSecondChoiceChanged(event) }  />
                         <Form.Check id='2-isCorrect' inline type={this.state.choiceType}
@@ -578,7 +585,7 @@ class EditTestView extends React.Component {
                     </Form.Group> 
                     <Form.Group controlId="formBasicCheckbox">
                         <Form.Control type="text" placeholder="third choice"
-                                      className='w-50'
+                                      className='w-50 d-inline-block mr-3'
                                       value={this.state.currentThirdChoice}
                                       onChange={event => this.onCurrentThirdChoiceChanged(event) }  />
                         <Form.Check id='3-isCorrect' inline type={this.state.choiceType}
@@ -588,8 +595,9 @@ class EditTestView extends React.Component {
                                     disabled={ this.state.currentThirdChoiceIsCorrectDisabled }
                                     name='choice' label='Is Correct?' />                                        
                     </Form.Group>      
-                    <Form.Group controlId="formBasicCheckbox" className='w-75'>
+                    <Form.Group controlId="formBasicCheckbox">
                         <Form.Control type="text" placeholder="fourth choice"
+                                      className='w-50 d-inline-block mr-3'
                                       value={this.state.currentFourthChoice}
                                       onChange={event => this.onCurrentFourthChoiceChanged(event) }  />
                         <Form.Check id='4-isCorrect' inline type={this.state.choiceType}
