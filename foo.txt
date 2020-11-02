@@ -23,6 +23,13 @@ class Question extends React.Component {
 
         this.selectedAnswers = {};
         this.answerChangedCallback = props.answerChangedCallback;
+
+        this.state = {
+            '0-isChecked': false,
+            '1-isChecked': false,
+            '2-isChecked': false,
+            '3-isChecked': false,    
+        }
     };
 
 
@@ -36,9 +43,47 @@ class Question extends React.Component {
             }
         }
 
-        this.selectedAnswers[event.target.id] = event.target.checked;
+        // This is ugly but it works.
+        switch(event.target.id) {
+            case '0':
+                this.setState({
+                    '0-isChecked': event.target.checked,
+                    '1-isChecked': false,
+                    '2-isChecked': false,
+                    '3-isChecked': false,                                    
+                });
+                break;
+            case '1':
+                this.setState({
+                    '0-isChecked': false,
+                    '1-isChecked': event.target.checked,
+                    '2-isChecked': false,
+                    '3-isChecked': false,                                    
+                });
+                break;
+            case '2':
+                this.setState({
+                    '0-isChecked': false,
+                    '1-isChecked': false,
+                    '2-isChecked': event.target.checked,
+                    '3-isChecked': false,                                    
+                });
+                break;     
+            case '3':
+                this.setState({
+                    '0-isChecked': false,
+                    '1-isChecked': false,
+                    '2-isChecked': false,
+                    '3-isChecked': event.target.checked,                                   
+                });
+                break;                           
+            default:
+                break;
+        }
 
-        const answers = {...this.selectedAnswers};
+        this.setState()
+
+        this.selectedAnswers[event.target.id] = event.target.checked;
 
         this.answerChangedCallback(this.selectedAnswers);
     };
@@ -53,6 +98,12 @@ class Question extends React.Component {
 
         // Clear any previously rendered selected answers.
         this.selectedAnswers = {};
+        // this.setState({
+        //     '0-isChecked': false,
+        //     '1-isChecked': false,
+        //     '2-isChecked': false,
+        //     '3-isChecked': false,                                    
+        // });
 
         const choices = this.props.choices.map((choice, index) => {
 
@@ -69,6 +120,8 @@ class Question extends React.Component {
                 return (
                     <p key={index}>
                         <input id={index} type={controlType} name='question'
+                            value={ index }
+                            checked={this.state[`${index}-isChecked`]}
                             onChange={event => this.onControlChanged(event)} />
                         <label for={index}>{choice.text}</label>
                     </p>
